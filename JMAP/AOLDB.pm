@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-package JMAP::GmailDB;
+package JMAP::AOLDB;
 
 use base qw(JMAP::ImapDB);
 
@@ -23,7 +23,7 @@ use JMAP::Sync::Gmail;
 sub new {
   my $class = shift;
   my $Self = $class->SUPER::new(@_);
-  $Self->{is_gmail} = 1;
+  $Self->{is_aol} = 1;
   return $Self;
 }
 
@@ -33,7 +33,7 @@ sub access_token {
   my ($hostname, $username, $password) = $Self->dbh->selectrow_array("SELECT imapHost, username, password FROM iserver");
   $Self->commit();
 
-  my $O = JMAP::Sync::Gmail::O();
+  my $O = JMAP::Sync::AOL::O();
   my $data = $O->refresh($password);
 
   return [$hostname, $username, $data->{access_token}];
